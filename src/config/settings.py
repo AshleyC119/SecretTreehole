@@ -21,7 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 import os
 
@@ -38,14 +37,26 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
 else:
     # *** 生产环境 (Koyeb) ***
-    # 获取Koyeb应用的全域名，这是最可靠的来源
+
+    # 获取Koyeb应用的全域名
+    KOYEB_APP_DOMAIN = os.environ.get('KOYEB_APP_FQDN', 'your-app-name.koyeb.app')
+    ALLOWED_HOSTS = [KOYEB_APP_DOMAIN, '.koyeb.app']
+
+    # 【核心修复】Cookie 和安全设置
+    # 1. 强制使用HTTPS（如果Koyeb已为你配置了SSL证书，则启用）
+    # SECURE_SSL_REDIRECT = True  # 先注释掉，确保能访问
+
+    # 2. 告诉Django我们运行在一个反向代理（如Koyeb的负载均衡器）后面，它能处理好HTTPS
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    KOYEB_APP_DOMAIN = os.environ.get('KOYEB_APP_FQDN', 'treehole.yuming.koyeb.app')
-    ALLOWED_HOSTS = [KOYEB_APP_DOMAIN, '.koyeb.app']  # 允许具体域名和所有子域
-    CSRF_TRUSTED_ORIGINS = [f'https://{KOYEB_APP_DOMAIN}']
-    SESSION_COOKIE_SECURE = True  # 仅通过HTTPS发送会话cookie
-    CSRF_COOKIE_SECURE = True  # 仅通过HTTPS发送CSRF cookie
-    SESSION_COOKIE_SAMESITE = 'Lax'
+
+    # 3. 【关键】Cookie 设置 - 调整为开发兼容模式，确保登录状态持久
+    SESSION_COOKIE_SECURE = False  # 设为 False，允许HTTP连接传输会话Cookie（初期调试）
+    CSRF_COOKIE_SECURE = False  # 设为 False，允许HTTP连接传输CSRF Cookie
+    SESSION_COOKIE_DOMAIN = None  # 设为 None，让Cookie在所有子域下有效
+    CSRF_TRUSTED_ORIGINS = [f'https://{KOYEB_APP_DOMAIN}', f'http://{KOYEB_APP_DOMAIN}']  # 同时信任HTTP和HTTPS来源
+
+    # 4. 可选：延长会话过期时间（默认为2周）
+    SESSION_COOKIE_AGE = 1209600  # 单位是秒（2周）
 # ===== 配置结束 =====
 
 CSRF_COOKIE_DOMAIN = '.koyeb.app'
