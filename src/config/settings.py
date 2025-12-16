@@ -55,7 +55,7 @@ else:
     SESSION_COOKIE_DOMAIN = None  # 设为 None，让Cookie在所有子域下有效
     # 在生产环境配置块（else: 下）中添加
 
-    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = 'None'
 
 
     # 4. 可选：延长会话过期时间（默认为2周）
