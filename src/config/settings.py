@@ -48,7 +48,8 @@ else:
     SESSION_COOKIE_SAMESITE = 'Lax'
 # ===== 配置结束 =====
 
-
+CSRF_COOKIE_DOMAIN = '.koyeb.app'
+SESSION_COOKIE_DOMAIN = '.koyeb.app'
 
 # Application definition
 
