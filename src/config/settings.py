@@ -53,6 +53,9 @@ else:
     SESSION_COOKIE_SECURE = False  # 设为 False，允许HTTP连接传输会话Cookie（初期调试）
     CSRF_COOKIE_SECURE = False  # 设为 False，允许HTTP连接传输CSRF Cookie
     SESSION_COOKIE_DOMAIN = None  # 设为 None，让Cookie在所有子域下有效
+    # 在生产环境配置块（else: 下）中添加
+    CSRF_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SAMESITE = 'None'
     CSRF_TRUSTED_ORIGINS = [f'https://{KOYEB_APP_DOMAIN}', f'http://{KOYEB_APP_DOMAIN}']  # 同时信任HTTP和HTTPS来源
 
     # 4. 可选：延长会话过期时间（默认为2周）
