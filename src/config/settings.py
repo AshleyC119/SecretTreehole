@@ -43,6 +43,9 @@ else:
     KOYEB_APP_DOMAIN = os.environ.get('KOYEB_APP_FQDN', 'treehole.yuming.koyeb.app')
     ALLOWED_HOSTS = [KOYEB_APP_DOMAIN, '.koyeb.app']  # 允许具体域名和所有子域
     CSRF_TRUSTED_ORIGINS = [f'https://{KOYEB_APP_DOMAIN}']
+    SESSION_COOKIE_SECURE = True  # 仅通过HTTPS发送会话cookie
+    CSRF_COOKIE_SECURE = True  # 仅通过HTTPS发送CSRF cookie
+    SESSION_COOKIE_SAMESITE = 'Lax'
 # ===== 配置结束 =====
 
 
