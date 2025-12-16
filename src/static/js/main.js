@@ -65,6 +65,9 @@ $(document).ready(function() {
             $.ajax({
                 url: likeUrl,
                 type: 'POST',
+                xhrFields: {
+                    withCredentials: true
+                },
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken'),
                     'X-Requested-With': 'XMLHttpRequest'
