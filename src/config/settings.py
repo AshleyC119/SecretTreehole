@@ -139,6 +139,7 @@ USE_TZ = True
 
 # 静态文件配置（开发环境）
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
