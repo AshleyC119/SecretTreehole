@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}登录 - SecretTreehole{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h3 class="mb-0"><i class="fas fa-sign-in-alt"></i> 登录 SecretTreehole</h3>
+            </div>
+            <div class="card-body p-4">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    用户名或密码错误，请重试。
+                </div>
+                {% endif %}
+                
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    <div class="alert alert-warning">
+                        您的账户没有权限访问此页面。请使用有权限的账户登录。
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        请先登录以访问此页面。
+                    </div>
+                    {% endif %}
+                {% endif %}
+                
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-user"></i> 用户名
+                        </label>
+                        <input type="text" name="username" id="username" 
+                               class="form-control" required autofocus>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i> 密码
+                        </label>
+                        <input type="password" name="password" id="password" 
+                               class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember_me">
+                        <label class="form-check-label" for="remember_me">
+                            记住我
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> 登录
+                        </button>
+                    </div>
+                    
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <p class="mb-2">还没有账号？</p>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus"></i> 立即注册
+                    </a>
+                </div>
+            </div>
+            <div class="card-footer text-center text-muted">
+                <small>忘记密码？请联系管理员重置。</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+    }
+</style>
+{% endblock %}

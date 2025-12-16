@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile_user.username }} 的个人资料 - SecretTreehole{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                {% if profile_user.avatar %}
+                    <img src="{{ profile_user.avatar.url }}" alt="头像" class="avatar-large mb-3">
+                {% else %}
+                    <div class="avatar-placeholder bg-secondary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px; font-size: 40px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <h4>{{ profile_user.username }}</h4>
+                <p class="text-muted">注册于 {{ profile_user.date_joined|date:"Y年m月d日" }}</p>
+                
+                {% if user == profile_user %}
+                <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-edit"></i> 编辑资料
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">统计信息</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-file-alt text-primary me-2"></i>
+                        发布的帖子：{{ posts_count }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-comment text-success me-2"></i>
+                        发布的评论：{{ comments_count }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-heart text-danger me-2"></i>
+                        点赞数：{{ likes_count }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">个人简介</h5>
+            </div>
+            <div class="card-body">
+                {% if profile_user.bio %}
+                    <p class="card-text">{{ profile_user.bio|linebreaks }}</p>
+                {% else %}
+                    <p class="text-muted">还没有个人简介...</p>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <h6>联系方式</h6>
+                    <p class="text-muted">
+                        <i class="fas fa-envelope me-2"></i>
+                        {% if profile_user.email %}
+                            {{ profile_user.email }}
+                        {% else %}
+                            未设置邮箱
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户的最新帖子 -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">最新帖子</h5>
+            </div>
+            <div class="card-body">
+                {% if user_posts %}
+                    <div class="list-group">
+                        {% for post in user_posts %}
+                        <a href="{% url 'post_detail' post.pk %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ post.title }}</h6>
+                                <small class="text-muted">{{ post.created_at|date:"m-d H:i" }}</small>
+                            </div>
+                            <p class="mb-1">{{ post.content|truncatechars:100 }}</p>
+                            <small>
+                                <span class="text-muted me-3">
+                                    <i class="far fa-eye"></i> {{ post.view_count }}
+                                </span>
+                                <span class="text-muted me-3">
+                                    <i class="far fa-heart"></i> {{ post.like_count }}
+                                </span>
+                                <span class="text-muted">
+                                    <i class="far fa-comment"></i> {{ post.comment_count }}
+                                </span>
+                            </small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a href="{% url 'post_list' %}?author={{ profile_user.username }}" class="btn btn-outline-secondary btn-sm">
+                            查看所有帖子
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center">还没有发布过帖子</p>
+                    {% if user == profile_user %}
+                    <div class="text-center">
+                        <a href="{% url 'post_create' %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> 发布第一个帖子
+                        </a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

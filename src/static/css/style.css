@@ -1,0 +1,241 @@
+/* 自定义样式增强 */
+
+/* 通用样式 */
+body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* 主要内容区域 */
+main.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* 导航栏优化 */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* 卡片样式 */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    padding: 1rem 1.25rem;
+}
+
+/* 按钮样式 */
+.btn {
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border: none;
+}
+
+/* 帖子卡片 */
+.post-card {
+    border-left: 4px solid #667eea;
+    transition: all 0.3s;
+}
+
+.post-card:hover {
+    border-left-color: #764ba2;
+    background-color: #f8f9ff;
+}
+
+.post-title {
+    color: #333;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.post-title:hover {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.post-meta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 表单样式 */
+.form-control {
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+/* 头像样式 */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.avatar-placeholder {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 徽章样式 */
+.badge {
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-weight: 500;
+}
+
+/* 分页样式 */
+.pagination .page-link {
+    border: none;
+    color: #667eea;
+    margin: 0 5px;
+    border-radius: 8px;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+/* 评论样式 */
+.comment {
+    border-left: 3px solid #e9ecef;
+    padding-left: 15px;
+    transition: border-color 0.3s;
+}
+
+.comment:hover {
+    border-left-color: #667eea;
+}
+
+/* 点赞按钮 */
+.like-btn {
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    background: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.like-btn:hover {
+    background-color: #fff5f5;
+    color: #dc3545;
+}
+
+.like-btn.liked {
+    color: #dc3545;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    main.container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}数据统计 - SecretTreehole{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">📊 数据统计</h1>
+    
+    <!-- 概览卡片 -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h2 class="display-4">{{ total_posts }}</h2>
+                    <p class="mb-0">总帖子数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h2 class="display-4">{{ published_posts }}</h2>
+                    <p class="mb-0">已发布帖子</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h2 class="display-4">{{ draft_posts }}</h2>
+                    <p class="mb-0">草稿帖子</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h2 class="display-4">{{ anonymous_posts }}</h2>
+                    <p class="mb-0">匿名帖子</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- 分类统计 -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie"></i> 分类统计</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>分类</th>
+                                <th class="text-end">帖子数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in category_stats %}
+                            <tr>
+                                <td>{{ category.name }}</td>
+                                <td class="text-end">{{ category.post_count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户发帖排名 -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-trophy"></i> 用户发帖排名</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>用户</th>
+                                <th class="text-end">发帖数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user_stat in user_post_stats %}
+                            <tr>
+                                <td>{{ user_stat.username }}</td>
+                                <td class="text-end">{{ user_stat.post_count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">暂无数据</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 每日发帖趋势 -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-line"></i> 最近30天发帖趋势</h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th class="text-end">发帖数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in daily_posts %}
+                    <tr>
+                        <td>{{ day.day }}</td>
+                        <td class="text-end">{{ day.count }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">暂无数据</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

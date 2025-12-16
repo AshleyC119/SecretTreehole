@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}注册 - SecretTreehole{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center py-3">
+                <h3 class="mb-0"><i class="fas fa-user-plus"></i> 加入 SecretTreehole</h3>
+                <p class="mb-0 small">开启你的树洞之旅</p>
+            </div>
+            <div class="card-body p-4">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    请修正以下错误：
+                    <ul class="mb-0 mt-2">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label">
+                                <i class="fas fa-user"></i> 用户名 *
+                            </label>
+                            <input type="text" name="username" id="username"
+                                   class="form-control" required
+                                   placeholder="输入用户名（3-15个字符）">
+                            <small class="form-text text-muted">
+                                用户名公开显示，请勿使用真实姓名。
+                            </small>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> 邮箱
+                            </label>
+                            <input type="email" name="email" id="email"
+                                   class="form-control"
+                                   placeholder="example@domain.com">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password1" class="form-label">
+                                <i class="fas fa-lock"></i> 密码 *
+                            </label>
+                            <input type="password" name="password1" id="password1"
+                                   class="form-control" required
+                                   placeholder="至少8个字符">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="password2" class="form-label">
+                                <i class="fas fa-lock"></i> 确认密码 *
+                            </label>
+                            <input type="password" name="password2" id="password2"
+                                   class="form-control" required
+                                   placeholder="再次输入密码">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="bio" class="form-label">
+                            <i class="fas fa-info-circle"></i> 个人简介（选填）
+                        </label>
+                        <textarea name="bio" id="bio"
+                                  class="form-control" rows="3"
+                                  placeholder="简单介绍一下自己..."></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                我已阅读并同意 <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">服务条款</a> 和 <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">隐私政策</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-user-plus"></i> 注册账号
+                        </button>
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-sign-in-alt"></i> 已有账号？登录
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 服务条款 Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">服务条款</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. 接受条款</h6>
+                <p>通过访问和/或使用 SecretTreehole 服务，您同意遵守本服务条款。</p>
+
+                <h6>2. 用户行为规范</h6>
+                <p>您同意不发布以下内容：</p>
+                <ul>
+                    <li>非法、威胁、骚扰、诽谤、侵犯隐私的内容</li>
+                    <li>垃圾邮件、商业广告</li>
+                    <li>侵犯他人知识产权的内容</li>
+                </ul>
+
+                <h6>3. 隐私保护</h6>
+                <p>我们会保护您的个人信息，但请注意：</p>
+                <ul>
+                    <li>匿名帖子仅对访客匿名，管理员可见发帖人</li>
+                    <li>请勿在帖子中透露敏感个人信息</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 隐私政策 Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">隐私政策</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. 信息收集</h6>
+                <p>我们收集的信息包括：</p>
+                <ul>
+                    <li>注册信息：用户名、邮箱、密码</li>
+                    <li>个人资料：头像、个人简介</li>
+                    <li>发布内容：帖子、评论</li>
+                </ul>
+
+                <h6>2. 信息使用</h6>
+                <p>我们使用您的信息来：</p>
+                <ul>
+                    <li>提供和改进服务</li>
+                    <li>与您沟通</li>
+                    <li>确保平台安全</li>
+                </ul>
+
+                <h6>3. 信息保护</h6>
+                <p>我们采取合理措施保护您的信息安全，但不能保证绝对安全。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .form-control:focus {
+        border-color: #198754;
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}删除帖子 - SecretTreehole{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">确认删除</h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                    <h5>确定要删除帖子 "{{ object.title }}" 吗？</h5>
+                    <p class="text-muted">此操作不可恢复，所有评论和点赞也将被删除。</p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'post_detail' object.pk %}" class="btn btn-outline-secondary">
+                            取消
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> 确认删除
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
