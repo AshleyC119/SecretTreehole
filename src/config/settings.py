@@ -39,7 +39,8 @@ if DEBUG:
 else:
     # *** 生产环境 (Koyeb) ***
     # 获取Koyeb应用的全域名，这是最可靠的来源
-    KOYEB_APP_DOMAIN = os.environ.get('KOYEB_APP_FQDN', 'your-app-name.koyeb.app')
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    KOYEB_APP_DOMAIN = os.environ.get('KOYEB_APP_FQDN', 'treehole.yuming.koyeb.app')
     ALLOWED_HOSTS = [KOYEB_APP_DOMAIN, '.koyeb.app']  # 允许具体域名和所有子域
     CSRF_TRUSTED_ORIGINS = [f'https://{KOYEB_APP_DOMAIN}']
 # ===== 配置结束 =====
