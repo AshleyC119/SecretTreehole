@@ -48,48 +48,63 @@ $(document).ready(function() {
     });
 
     // 点赞功能（AJAX）
-    $('.like-btn').click(function(e) {
-        e.preventDefault();
-        const likeBtn = $(this);
-        const postId = likeBtn.data('post-id');
-        const likeUrl = `/interactions/like/${postId}/`;
+ // 点赞功能（AJAX） - 修正版
+$(document).on('click', '.like-btn', function(e) {
+    e.preventDefault();
 
-        if (!likeBtn.hasClass('liked')) {
-            // 立即更新UI，提供即时反馈
-            likeBtn.addClass('liked');
-            likeBtn.find('i').removeClass('far').addClass('fas');
-            const likeCount = parseInt(likeBtn.find('.like-count').text()) + 1;
-            likeBtn.find('.like-count').text(likeCount);
+    // 获取按钮和数据
+    const likeBtn = $(this);
+    const postId = likeBtn.data('post-id');
+    const likeUrl = `/interactions/like/${postId}/`;
 
-            // 发送AJAX请求
-            $.ajax({
-                url: likeUrl,
-                type: 'POST',
-                xhrFields: {
-                    withCredentials: true
-                },
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function(response) {
-                    // AJAX请求成功，更新计数
-                    likeBtn.find('.like-count').text(response.like_count);
-                },
-                error: function(xhr, status, error) {
-                    // 如果未登录，重定向到登录页面
-                    if (xhr.status === 403 || xhr.status === 401) {
-                        window.location.href = '/accounts/login/?next=' + window.location.pathname;
-                    } else {
-                        // 其他错误，恢复UI状态
-                        likeBtn.removeClass('liked');
-                        likeBtn.find('i').removeClass('fas').addClass('far');
-                        alert('点赞失败，请刷新页面重试');
-                    }
+    // 1. 获取 CSRF Token（标准方法）
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
-            });
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // 2. 发送 AJAX 请求（必须包含正确的 headers）
+    $.ajax({
+        url: likeUrl,
+        type: 'POST',
+        // 关键是下面这个 headers 配置
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest' // 明确告知Django这是AJAX请求
+        },
+        dataType: 'json', // 期待服务器返回JSON
+        success: function(response) {
+            // 更新按钮状态和计数
+            if (response.liked) {
+                likeBtn.addClass('liked');
+                likeBtn.find('i').removeClass('far').addClass('fas');
+            } else {
+                likeBtn.removeClass('liked');
+                likeBtn.find('i').removeClass('fas').addClass('far');
+            }
+            likeBtn.find('.like-count').text(response.like_count);
+        },
+        error: function(xhr, status, error) {
+            console.error('点赞失败:', status, error);
+            // 如果是因为未认证（401/403），刷新页面让用户重新登录
+            if (xhr.status === 401 || xhr.status === 403) {
+                alert('操作失败，请刷新页面或重新登录。');
+                window.location.reload();
+            }
         }
     });
+});
 
     // 评论字数统计
     $('#commentContent').on('input', function() {
